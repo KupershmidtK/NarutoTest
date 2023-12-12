@@ -4,8 +4,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
-    id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -71,6 +71,9 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Paging
+    implementation("androidx.paging:paging-compose:3.2.1")
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.5")
