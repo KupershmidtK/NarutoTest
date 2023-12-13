@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.narutotest.ui.MainAppView
 import com.example.narutotest.ui.characters.NarutoCharsScreen
 import com.example.narutotest.ui.characters.NarutoCharsViewModel
 import com.example.narutotest.ui.theme.NarutoTestTheme
@@ -28,11 +29,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val viewModel = hiltViewModel<NarutoCharsViewModel>()
-                    val narutoCharacters = viewModel.narutoCharsFlow.collectAsLazyPagingItems()
-                    NarutoCharsScreen(
-                        characters = narutoCharacters,
-                        onSearch = {} )
+                    MainAppView()
                 }
             }
         }

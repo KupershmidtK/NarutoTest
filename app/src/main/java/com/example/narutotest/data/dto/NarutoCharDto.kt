@@ -17,12 +17,3 @@ data class NarutoCharDto(
     //val rank: Rank? = null,
     //val voiceActors: Voice? = null,
 )
-
-fun NarutoCharDto.toCharEntity() = NarutoCharEntity(
-    id = id,
-    name = name,
-    images = images?.joinToString(";") ?: "",
-    jutsu = jutsu?.joinToString(";") ?: "",
-    natureType = natureType?.joinToString(";") ?: "",
-    uniqueTraits = uniqueTraits?.joinToString(";") ?: ""
-)

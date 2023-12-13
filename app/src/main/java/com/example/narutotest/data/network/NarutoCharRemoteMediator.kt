@@ -9,9 +9,9 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.example.narutotest.data.dao.NarutoCharEntity
-import com.example.narutotest.data.dto.toCharEntity
 import com.example.narutotest.data.local.NarutoDatabase
-import com.example.narutotest.data.model.NarutoChar
+import com.example.narutotest.data.mappers.toCharEntity
+import com.example.narutotest.data.model.NarutoItem.NarutoChar
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)

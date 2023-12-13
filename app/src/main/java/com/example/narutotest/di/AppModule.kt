@@ -5,6 +5,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.room.Room
+import com.example.narutotest.data.NarutoRepository
 import com.example.narutotest.data.dao.NarutoCharEntity
 import com.example.narutotest.data.local.NarutoDatabase
 import com.example.narutotest.data.network.NarutoApiService
@@ -64,5 +65,11 @@ object AppModule {
                 narutoDb.dao.pagingCharsSource()
             }
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideNarutoRepository(narutoApi: NarutoApiService): NarutoRepository {
+        return NarutoRepository(narutoApi)
     }
 }

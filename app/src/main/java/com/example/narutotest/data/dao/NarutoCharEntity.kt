@@ -2,7 +2,7 @@ package com.example.narutotest.data.dao
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.narutotest.data.model.NarutoChar
+import com.example.narutotest.data.model.NarutoItem.NarutoChar
 
 @Entity
 data class NarutoCharEntity(
@@ -18,13 +18,4 @@ data class NarutoCharEntity(
     val uniqueTraits: String,
     //val rank: Rank? = null,
     //val voiceActors: Voice? = null,
-)
-
-fun NarutoCharEntity.toNarutoChar() = NarutoChar(
-    id = id,
-    name = name,
-    images = images.split(";"),
-    jutsu = jutsu.split(";"),
-    natureType = natureType.split(";"),
-    uniqueTraits = uniqueTraits.split(";")
 )
