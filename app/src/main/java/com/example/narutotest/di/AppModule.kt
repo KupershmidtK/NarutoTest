@@ -1,4 +1,4 @@
-package com.example.di
+package com.example.narutotest.di
 
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi

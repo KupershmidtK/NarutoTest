@@ -13,18 +13,24 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.narutotest.R
 import com.example.narutotest.data.model.NarutoChar
 import com.example.narutotest.ui.theme.NarutoTestTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NarutoCharCard(
     item: NarutoChar,
@@ -40,12 +46,15 @@ fun NarutoCharCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val imageUrl = if (item.images.isNullOrEmpty()) "" else item.images[0]
+
             AsyncImage(
                 model = imageUrl,
                 contentDescription = item.name,
+                error = painterResource(id = R.drawable.naruto),
+//                contentScale = ContentScale.FillWidth,
                 modifier = Modifier
                     .height(300.dp)
-                    .border(28.dp, Color.Black)
+                    .border(28.dp, Color.White)
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(

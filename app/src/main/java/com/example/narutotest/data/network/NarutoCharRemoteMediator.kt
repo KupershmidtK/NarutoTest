@@ -35,7 +35,7 @@ class NarutoCharRemoteMediator(
                     if (lastItem == null) {
                         1
                     } else {
-                        (lastItem.id / state.config.pageSize) + 1
+                        ((lastItem.id + 1) / state.config.pageSize) + 1
                     }
                 }
             }

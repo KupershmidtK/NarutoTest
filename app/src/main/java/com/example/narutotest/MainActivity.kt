@@ -30,7 +30,9 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val viewModel = hiltViewModel<NarutoCharsViewModel>()
                     val narutoCharacters = viewModel.narutoCharsFlow.collectAsLazyPagingItems()
-                    NarutoCharsScreen(characters = narutoCharacters)
+                    NarutoCharsScreen(
+                        characters = narutoCharacters,
+                        onSearch = {} )
                 }
             }
         }
