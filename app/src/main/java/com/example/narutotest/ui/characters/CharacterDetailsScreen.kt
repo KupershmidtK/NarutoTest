@@ -22,14 +22,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
 import coil.compose.AsyncImage
 import com.example.narutotest.R
+import com.example.narutotest.data.model.NarutoChar
 import com.example.narutotest.data.model.NarutoItem
 
 @Composable
-fun NarutoCharDetailsScreen(
-    viewModel: NarutoCharDetailViewModel = hiltViewModel(),
+fun CharacterDetailsScreen(
+    viewModel: CharacterDetailViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -44,7 +44,7 @@ fun NarutoCharDetailsScreen(
 
 @Composable
 fun CharSuccessCard(
-    item: NarutoItem.NarutoChar,
+    item: NarutoChar,
     modifier: Modifier = Modifier
 ) {
     Card(

@@ -17,3 +17,11 @@ data class NarutoCharDto(
     //val rank: Rank? = null,
     //val voiceActors: Voice? = null,
 )
+
+@Serializable
+data class NarutoCharsDto(
+    val characters: List<NarutoCharDto>,
+    val currentPage: Int,
+    val pageSize: Int,
+    val totalCharacters: Int,
+)

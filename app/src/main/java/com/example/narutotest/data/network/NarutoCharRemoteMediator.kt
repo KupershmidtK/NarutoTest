@@ -11,7 +11,7 @@ import androidx.room.withTransaction
 import com.example.narutotest.data.dao.NarutoCharEntity
 import com.example.narutotest.data.local.NarutoDatabase
 import com.example.narutotest.data.mappers.toCharEntity
-import com.example.narutotest.data.model.NarutoItem.NarutoChar
+import com.example.narutotest.data.model.NarutoChar
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)

@@ -1,11 +1,10 @@
-package com.example.narutotest.ui.characters
+package com.example.narutotest.ui.components
 
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,51 +13,45 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.narutotest.data.model.NarutoItem.NarutoChar
+import com.example.narutotest.data.model.NarutoItem
+import com.example.narutotest.ui.theme.Carrot20
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NarutoCharsScreen(
-    navToDetails: (String) -> Unit,
+fun ItemListScreen(
+    itemList: LazyPagingItems<NarutoItem>,
+    title: String,
+    navBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: NarutoCharsViewModel = hiltViewModel<NarutoCharsViewModel>(),
+    navToCharList: (() -> Unit)? = null,
+    navToVillageList: (() -> Unit)? = null,
+    navToClanList: (() -> Unit)? = null,
+    navToDetails: (String) -> Unit,
 ) {
 
-    val characters: LazyPagingItems<NarutoChar> = viewModel.narutoCharsFlow.collectAsLazyPagingItems()
+//    val itemList: LazyPagingItems<NarutoChar> = viewModel.narutoCharsFlow.collectAsLazyPagingItems()
 
     val context = LocalContext.current
-    LaunchedEffect(key1 = characters.loadState) {
-        if(characters.loadState.refresh is LoadState.Error) {
+    LaunchedEffect(key1 = itemList.loadState) {
+        if(itemList.loadState.refresh is LoadState.Error) {
             Toast.makeText(
                 context,
-                "Error: " + (characters.loadState.refresh as LoadState.Error).error.message,
+                "Error: " + (itemList.loadState.refresh as LoadState.Error).error.message,
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -66,19 +59,36 @@ fun NarutoCharsScreen(
 
     val config = LocalConfiguration.current
     val orientationMode by remember { mutableStateOf(config.orientation) }
-    Column {
-        HeaderWithSearch(onSearch = navToDetails)
+    Scaffold(
+        topBar = {
+            ItemListTopBar(
+                title = title,
+                navBack = navBack,
+                navToCharList = navToCharList,
+                navToClanList = navToClanList,
+                navToVillageList = navToVillageList
+            )
+         },
+        containerColor = Carrot20,
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            if (characters.loadState.refresh is LoadState.Loading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            } else {
-                if (orientationMode == Configuration.ORIENTATION_PORTRAIT) {
-                    VerticalList(characters = characters, navToDetails = navToDetails)
+    ) { padding ->
+        Column(
+            modifier = Modifier.padding(padding)
+        ) {
+            SearchString(onSearch = navToDetails)
+//            Spacer(Modifier.height(4.dp))
+
+            Box(modifier = Modifier.fillMaxSize()) {
+                if (itemList.loadState.refresh is LoadState.Loading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
+                    )
                 } else {
-                    HorizontalList(characters = characters, navToDetails = navToDetails)
+                    if (orientationMode == Configuration.ORIENTATION_PORTRAIT) {
+                        VerticalList(characters = itemList, navToDetails = navToDetails)
+                    } else {
+                        HorizontalList(characters = itemList, navToDetails = navToDetails)
+                    }
                 }
             }
         }
@@ -87,7 +97,7 @@ fun NarutoCharsScreen(
 
 @Composable 
 fun VerticalList(
-    characters: LazyPagingItems<NarutoChar>,
+    characters: LazyPagingItems<NarutoItem>,
     navToDetails: (String) -> Unit,
     ) {
     LazyColumn(
@@ -98,7 +108,7 @@ fun VerticalList(
         items(characters.itemCount) { index ->
             val character = characters[index]
             if (character != null) {
-                NarutoCard(
+                NarutoItemCard(
                     item = character,
                     navToDetails = navToDetails,
                     modifier = Modifier
@@ -118,7 +128,7 @@ fun VerticalList(
 
 @Composable
 fun HorizontalList(
-    characters: LazyPagingItems<NarutoChar>,
+    characters: LazyPagingItems<NarutoItem>,
     navToDetails: (String) -> Unit,
     ) {
     LazyRow(
@@ -129,7 +139,7 @@ fun HorizontalList(
         items(characters.itemCount) { index ->
             val character = characters[index]
             if (character != null) {
-                NarutoCard(
+                NarutoItemCard(
                     item = character,
                     navToDetails = navToDetails,
                     modifier = Modifier
@@ -147,33 +157,3 @@ fun HorizontalList(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun HeaderWithSearch(onSearch: (String) -> Unit) {
-    Text(
-        text = "Characters",
-        style = MaterialTheme.typography.headlineLarge,
-        textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth())
-    Spacer(Modifier.height(4.dp))
-    var searchName by remember { mutableStateOf("") }
-    OutlinedTextField(
-        value = searchName,
-        placeholder = { Text("Search") },
-        onValueChange = { searchName = it },
-        leadingIcon = { Icon(
-                Icons.Filled.Search,
-                contentDescription = null) },
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Search
-        ),
-        keyboardActions = KeyboardActions(
-            onSearch = { onSearch(searchName) }
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(4.dp)
-    )
-    Spacer(Modifier.height(8.dp))
-}

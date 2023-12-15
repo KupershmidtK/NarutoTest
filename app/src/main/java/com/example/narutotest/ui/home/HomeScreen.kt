@@ -21,7 +21,9 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    charactersOnClick: () -> Unit
+    charactersOnClick: () -> Unit,
+    clansOnClick: () -> Unit,
+    villagesOnClick: () -> Unit,
 ) {
     Surface(modifier = modifier.fillMaxSize()) {
         Column {
@@ -34,19 +36,19 @@ fun HomeScreen(
                 modifier = localModifier.clickable(onClick = charactersOnClick),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "Characters", fontSize = 32.sp)
+                Text(text = "Characters", fontSize = 24.sp)
             }
             Box(
-                modifier = localModifier,
+                modifier = localModifier.clickable(onClick = clansOnClick),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "Clans", fontSize = 32.sp)
+                Text(text = "Clans", fontSize = 24.sp)
             }
             Box(
-                modifier = localModifier,
+                modifier = localModifier.clickable(onClick = villagesOnClick),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "Whooop", fontSize = 32.sp)
+                Text(text = "Villages", fontSize = 24.sp)
             }
         }
     }

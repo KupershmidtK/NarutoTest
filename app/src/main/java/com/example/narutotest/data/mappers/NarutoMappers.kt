@@ -2,6 +2,10 @@ package com.example.narutotest.data.mappers
 
 import com.example.narutotest.data.dao.NarutoCharEntity
 import com.example.narutotest.data.dto.NarutoCharDto
+import com.example.narutotest.data.dto.NarutoClanDto
+import com.example.narutotest.data.dto.NarutoVillageDto
+import com.example.narutotest.data.model.NarutoChar
+import com.example.narutotest.data.model.NarutoVillageClan
 import com.example.narutotest.data.model.NarutoItem
 
 fun NarutoCharDto.toCharEntity() = NarutoCharEntity(
@@ -13,11 +17,31 @@ fun NarutoCharDto.toCharEntity() = NarutoCharEntity(
     uniqueTraits = uniqueTraits?.joinToString(";") ?: ""
 )
 
-fun NarutoCharEntity.toNarutoChar() = NarutoItem.NarutoChar(
+fun NarutoCharEntity.toNarutoChar() = NarutoChar(
     id = id,
     name = name,
     images = images.split(";"),
     jutsu = jutsu.split(";"),
     natureType = natureType.split(";"),
     uniqueTraits = uniqueTraits.split(";")
+)
+
+fun NarutoCharEntity.toNarutoItem() = NarutoItem(
+    id = id,
+    name = name,
+    images = images.split(";")
+)
+
+fun NarutoClanDto.toNarutoVillageClan() = NarutoVillageClan (
+    id = id,
+    name = name,
+    images = images,
+    characters = characters?.map { it.toCharEntity().toNarutoChar() }
+)
+
+fun NarutoVillageDto.toNarutoVillageClan() = NarutoVillageClan (
+    id = id,
+    name = name,
+    images = images,
+    characters = characters?.map { it.toCharEntity().toNarutoChar() }
 )

@@ -2,7 +2,7 @@ package com.example.narutotest.data.dao
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.narutotest.data.model.NarutoItem.NarutoChar
+import com.example.narutotest.data.model.NarutoChar
 
 @Entity
 data class NarutoCharEntity(
