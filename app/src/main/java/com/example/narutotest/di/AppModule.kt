@@ -10,6 +10,7 @@ import com.example.narutotest.data.dao.NarutoCharEntity
 import com.example.narutotest.data.local.NarutoDatabase
 import com.example.narutotest.data.network.NarutoApiService
 import com.example.narutotest.data.network.NarutoCharRemoteMediator
+import com.example.narutotest.notification.NarutoNotificationService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -71,5 +72,11 @@ object AppModule {
     @Singleton
     fun provideNarutoRepository(narutoApi: NarutoApiService): NarutoRepository {
         return NarutoRepository(narutoApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNarutoNotificationService(@ApplicationContext context: Context): NarutoNotificationService {
+        return NarutoNotificationService(context)
     }
 }

@@ -6,14 +6,13 @@ import androidx.paging.Pager
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.example.narutotest.data.dao.NarutoCharEntity
-import com.example.narutotest.data.mappers.toNarutoChar
 import com.example.narutotest.data.mappers.toNarutoItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterViewModel @Inject constructor(
+class CharListViewModel @Inject constructor(
     private val pager: Pager<Int, NarutoCharEntity>
 ): ViewModel() {
 

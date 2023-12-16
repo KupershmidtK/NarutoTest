@@ -25,11 +25,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.narutotest.R
 import com.example.narutotest.data.model.NarutoChar
-import com.example.narutotest.data.model.NarutoItem
 
 @Composable
-fun CharacterDetailsScreen(
-    viewModel: CharacterDetailViewModel = hiltViewModel(),
+fun CharDetailsScreen(
+    viewModel: CharDetailViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -38,8 +37,6 @@ fun CharacterDetailsScreen(
         CharUiState.Loading -> CircularProgressIndicator()
         is CharUiState.Success -> CharSuccessCard(item = (uiState as CharUiState.Success).character)
     }
-    
-
 }
 
 @Composable
@@ -56,7 +53,7 @@ fun CharSuccessCard(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val imageUrl = if (item.images.isNullOrEmpty()) "" else item.images?.get(0)
+            val imageUrl = if (item.images.isNullOrEmpty()) "" else item.images.get(0)
 
             AsyncImage(
                 model = imageUrl,

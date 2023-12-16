@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Наруто</string>
+    <string name="char_title">Персонажи</string>
+    <string name="char_info">Персонаж</string>
+    <string name="search">Текст для поиска</string>
+    <string name="clans_title">Кланы</string>
+    <string name="villages_title">Деревни</string>
+    <string name="naruto_channel_name">Наруто канал натификации</string>
+</resources>

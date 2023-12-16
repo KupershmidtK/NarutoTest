@@ -3,6 +3,7 @@
     <string name="char_title">Characters</string>
     <string name="char_info">Character Information</string>
     <string name="search">Type here to search</string>
-    <string name="clans_info">Clans</string>
-    <string name="villages_info">Villages</string>
+    <string name="clans_title">Clans</string>
+    <string name="villages_title">Villages</string>
+    <string name="naruto_channel_name">Naruto notification channel</string>
 </resources>

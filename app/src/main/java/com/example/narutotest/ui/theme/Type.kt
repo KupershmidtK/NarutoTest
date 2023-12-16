@@ -13,8 +13,14 @@ val NarutoFamily = FontFamily(
     Font(R.font.naruto)
 )
 val Typography = Typography(
+    labelLarge = TextStyle(
+        fontFamily = NarutoFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 18.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    ),
     bodyLarge = TextStyle(
-//        fontFamily = FontFamily.Default,
         fontFamily = NarutoFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
@@ -27,7 +33,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 18.sp,
         lineHeight = 28.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.5.sp
     ),
     labelSmall = TextStyle(
         fontFamily = NarutoFamily,

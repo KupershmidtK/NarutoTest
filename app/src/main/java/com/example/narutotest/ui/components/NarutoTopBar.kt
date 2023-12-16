@@ -16,20 +16,20 @@ import com.example.narutotest.ui.theme.Carrot
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ItemListTopBar(
+fun NarutoTopBar(
     title: String,
     navBack: () -> Unit,
-    navToCharList: (() -> Unit)? = null,
-    navToVillageList: (() -> Unit)? = null,
-    navToClanList: (() -> Unit)? = null,
+//    navToCharList: (() -> Unit)? = null,
+//    navToVillageList: (() -> Unit)? = null,
+//    navToClanList: (() -> Unit)? = null,
 ) {
 
     return CenterAlignedTopAppBar(
         title = { Text(title) },
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = Carrot,
-
-            ),
+//        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+//            containerColor = Carrot,
+//
+//            ),
         navigationIcon = {
             IconButton(onClick = navBack) {
                 Icon(
@@ -37,7 +37,7 @@ fun ItemListTopBar(
                 )
             }
         },
-        actions = {
+/*        actions = {
             IconButton(
                 onClick = navToCharList ?: {},
                 enabled = navToCharList != null
@@ -60,6 +60,6 @@ fun ItemListTopBar(
             ) {
                 Icon(Icons.Default.AccountBox, contentDescription = null)
             }
-        }
+        }*/
     )
 }

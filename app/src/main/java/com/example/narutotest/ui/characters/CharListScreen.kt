@@ -1,4 +1,4 @@
-package com.example.narutotest.ui.components
+package com.example.narutotest.ui.characters
 
 import android.content.res.Configuration
 import android.widget.Toast
@@ -29,18 +29,16 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.example.narutotest.data.model.NarutoItem
+import com.example.narutotest.ui.components.NarutoTopBar
 import com.example.narutotest.ui.theme.Carrot20
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ItemListScreen(
+fun CharListScreen(
     itemList: LazyPagingItems<NarutoItem>,
     title: String,
     navBack: () -> Unit,
     modifier: Modifier = Modifier,
-    navToCharList: (() -> Unit)? = null,
-    navToVillageList: (() -> Unit)? = null,
-    navToClanList: (() -> Unit)? = null,
     navToDetails: (String) -> Unit,
 ) {
 
@@ -61,21 +59,18 @@ fun ItemListScreen(
     val orientationMode by remember { mutableStateOf(config.orientation) }
     Scaffold(
         topBar = {
-            ItemListTopBar(
+            NarutoTopBar(
                 title = title,
                 navBack = navBack,
-                navToCharList = navToCharList,
-                navToClanList = navToClanList,
-                navToVillageList = navToVillageList
             )
          },
-        containerColor = Carrot20,
+//        containerColor = Carrot20,
 
     ) { padding ->
         Column(
             modifier = Modifier.padding(padding)
         ) {
-            SearchString(onSearch = navToDetails)
+            CharSearchString(onSearch = navToDetails)
 //            Spacer(Modifier.height(4.dp))
 
             Box(modifier = Modifier.fillMaxSize()) {
@@ -108,7 +103,7 @@ fun VerticalList(
         items(characters.itemCount) { index ->
             val character = characters[index]
             if (character != null) {
-                NarutoItemCard(
+                CharListCard(
                     item = character,
                     navToDetails = navToDetails,
                     modifier = Modifier
@@ -139,7 +134,7 @@ fun HorizontalList(
         items(characters.itemCount) { index ->
             val character = characters[index]
             if (character != null) {
-                NarutoItemCard(
+                CharListCard(
                     item = character,
                     navToDetails = navToDetails,
                     modifier = Modifier

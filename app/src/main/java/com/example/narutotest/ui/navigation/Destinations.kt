@@ -26,11 +26,11 @@ object CharactersDetailsScreenDest: NavigationDestination {
 
 object ClansScreenDest: NavigationDestination {
     override val route = "clans"
-    override val title: Int = R.string.clans_info
+    override val title: Int = R.string.clans_title
 }
 
 object VillagesScreenDest: NavigationDestination {
     override val route = "villages"
-    override val title: Int = R.string.villages_info
+    override val title: Int = R.string.villages_title
 }
 

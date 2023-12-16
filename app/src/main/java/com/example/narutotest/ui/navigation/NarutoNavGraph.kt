@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -16,12 +15,12 @@ import androidx.navigation.navArgument
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.narutotest.data.model.NarutoItem
-import com.example.narutotest.ui.characters.CharacterDetailsScreen
-import com.example.narutotest.ui.characters.CharacterViewModel
-import com.example.narutotest.ui.clans.ClansScreen
-import com.example.narutotest.ui.clans.ClansViewModel
-import com.example.narutotest.ui.clans.VillagesViewModel
-import com.example.narutotest.ui.components.ItemListScreen
+import com.example.narutotest.ui.characters.CharDetailsScreen
+import com.example.narutotest.ui.characters.CharListViewModel
+import com.example.narutotest.ui.clans.VillageClanScreen
+import com.example.narutotest.ui.clans.ClanViewModel
+import com.example.narutotest.ui.clans.VillageViewModel
+import com.example.narutotest.ui.characters.CharListScreen
 import com.example.testdraw.ui.home.HomeScreen
 
 @Composable
@@ -29,14 +28,14 @@ fun NarutoNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
-    val charViewModel: CharacterViewModel = hiltViewModel()
-    val characters: LazyPagingItems<NarutoItem> = charViewModel.narutoCharsFlow.collectAsLazyPagingItems()
+    val charListViewModel: CharListViewModel = hiltViewModel()
+    val characters: LazyPagingItems<NarutoItem> = charListViewModel.narutoCharsFlow.collectAsLazyPagingItems()
 
-    val clansViewModel: ClansViewModel = hiltViewModel()
-    val clanUiState by clansViewModel.uiState.collectAsState()
+    val clanViewModel: ClanViewModel = hiltViewModel()
+    val clanUiState by clanViewModel.uiState.collectAsState()
 
-    val villagesViewModel: VillagesViewModel = hiltViewModel()
-    val villageUiState by villagesViewModel.uiState.collectAsState()
+    val villageViewModel: VillageViewModel = hiltViewModel()
+    val villageUiState by villageViewModel.uiState.collectAsState()
 
     NavHost (
         navController = navController,
@@ -54,11 +53,10 @@ fun NarutoNavGraph(
         composable(
             route = CharactersScreenDest.route
             ) {
-            ItemListScreen(
+            CharListScreen(
                 itemList = characters,
                 title = stringResource(id = CharactersScreenDest.title),
                 navToDetails = { navController.navigate(route = "${CharactersDetailsScreenDest.route}/$it")},
-                navToClanList = { navController.navigate(route = ClansScreenDest.route )},
                 navBack = { navController.popBackStack() }
             )
         }
@@ -67,7 +65,7 @@ fun NarutoNavGraph(
             route = CharactersDetailsScreenDest.routeWithArgs,
             arguments = listOf(navArgument(CharactersDetailsScreenDest.charNameArg){ type = NavType.StringType })
         ) {
-            CharacterDetailsScreen(
+            CharDetailsScreen(
 //                navBack = { navController.popBackStack() }
             )
         }
@@ -75,7 +73,7 @@ fun NarutoNavGraph(
         composable(
             route = ClansScreenDest.route
         ) {
-            ClansScreen(
+            VillageClanScreen(
                 uiState = clanUiState,
                 title = ClansScreenDest.title,
                 navBack = { navController.popBackStack() }
@@ -86,7 +84,7 @@ fun NarutoNavGraph(
         composable(
             route = VillagesScreenDest.route
         ) {
-            ClansScreen(
+            VillageClanScreen(
                 uiState = villageUiState,
                 title = VillagesScreenDest.title,
                 navBack = { navController.popBackStack() }

@@ -12,24 +12,24 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class ClansViewModel @Inject constructor(
+class VillageViewModel @Inject constructor(
     private val narutoRepository: NarutoRepository
 ): ViewModel() {
 
-    val uiState: StateFlow<VillageClansUiState> =
-        narutoRepository.getAllClans()
-            .map { clanListDto ->
-                if (clanListDto != null) {
-                    val clanList = clanListDto.map { it.toNarutoVillageClan() }
-                    VillageClansUiState.Success(clanList)
+    val uiState: StateFlow<VillageClanUiState> =
+        narutoRepository.getAllVillages()
+            .map { villagesListDto ->
+                if (villagesListDto != null) {
+                    val clanList = villagesListDto.map { it.toNarutoVillageClan() }
+                    VillageClanUiState.Success(clanList)
                 } else {
-                    VillageClansUiState.Error
+                    VillageClanUiState.Error
                 }
             }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
-                initialValue = VillageClansUiState.Loading
+                initialValue = VillageClanUiState.Loading
             )
 
     companion object {

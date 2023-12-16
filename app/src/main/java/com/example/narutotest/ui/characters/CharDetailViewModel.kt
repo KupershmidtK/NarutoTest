@@ -7,7 +7,6 @@ import com.example.narutotest.data.NarutoRepository
 import com.example.narutotest.data.mappers.toCharEntity
 import com.example.narutotest.data.mappers.toNarutoChar
 import com.example.narutotest.data.model.NarutoChar
-import com.example.narutotest.data.model.NarutoItem
 import com.example.narutotest.ui.navigation.CharactersDetailsScreenDest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,7 +22,7 @@ sealed interface CharUiState {
 }
 
 @HiltViewModel
-class CharacterDetailViewModel @Inject constructor(
+class CharDetailViewModel @Inject constructor(
     val savedStateHandle: SavedStateHandle,
     val narutoRepository: NarutoRepository
 ): ViewModel() {

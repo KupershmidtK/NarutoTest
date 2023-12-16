@@ -8,48 +8,83 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.narutotest.R
+import com.example.narutotest.notification.NarutoNotificationService
 
 @Composable
-fun HomeScreen(
+fun HomeScreen (
     modifier: Modifier = Modifier,
     charactersOnClick: () -> Unit,
     clansOnClick: () -> Unit,
     villagesOnClick: () -> Unit,
 ) {
-    Surface(modifier = modifier.fillMaxSize()) {
+    val context = LocalContext.current
+
+    Surface(
+        modifier = modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
         Column {
             val localModifier = modifier
                 .fillMaxWidth()
                 .padding(8.dp)
-                .border(2.dp, Color.Blue)
-                .weight(1f)
+//                .border(2.dp, Color.Blue)
             Box(
-                modifier = localModifier.clickable(onClick = charactersOnClick),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .weight(5f),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "Characters", fontSize = 24.sp)
+                Icon(
+                    painter = painterResource(id = R.drawable.naruto),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    tint = MaterialTheme.colorScheme.surface
+                )
+
             }
+
             Box(
-                modifier = localModifier.clickable(onClick = clansOnClick),
+                modifier = localModifier
+                    .weight(1f)
+                    .clickable {
+                        NarutoNotificationService(context).showNotification("Test notification")
+                    },
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "Clans", fontSize = 24.sp)
+                Text(text = "Notification", fontSize = 16.sp)
             }
-            Box(
-                modifier = localModifier.clickable(onClick = villagesOnClick),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "Villages", fontSize = 24.sp)
-            }
+
+            Button(
+                onClick = charactersOnClick,
+                modifier = localModifier.weight(1f),
+                shape = RectangleShape
+            ) { Text( text = stringResource(id = R.string.char_title)) }
+            Button(
+                onClick = clansOnClick,
+                modifier = localModifier.weight(1f),
+                shape = RectangleShape
+            ) { Text( text = stringResource(id = R.string.clans_title)) }
+            Button(
+                onClick = villagesOnClick,
+                modifier = localModifier.weight(1f),
+                shape = RectangleShape
+            ) { Text( text = stringResource(id = R.string.villages_title)) }
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.narutotest.ui.components
+package com.example.narutotest.ui.characters
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -25,14 +26,19 @@ import com.example.narutotest.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchString(onSearch: (String) -> Unit) {
+fun CharSearchString(onSearch: (String) -> Unit) {
     var searchName by remember { mutableStateOf("") }
     OutlinedTextField(
         value = searchName,
         placeholder = { Text(stringResource(R.string.search)) },
         onValueChange = { searchName = it },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            containerColor = Color.White
+            textColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            cursorColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            focusedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            unfocusedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            placeholderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
         leadingIcon = {
             Icon(
