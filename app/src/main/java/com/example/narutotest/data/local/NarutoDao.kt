@@ -16,4 +16,7 @@ interface NarutoDao {
 
     @Query("DELETE FROM narutocharentity")
     suspend fun clearAllChars()
+
+    @Query("SELECT * FROM narutocharentity WHERE id = :id")
+    fun getCharById(id: Int): NarutoCharEntity
 }

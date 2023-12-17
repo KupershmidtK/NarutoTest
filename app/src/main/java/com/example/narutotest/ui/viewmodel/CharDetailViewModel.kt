@@ -1,4 +1,4 @@
-package com.example.narutotest.ui.characters
+package com.example.narutotest.ui.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -8,12 +8,10 @@ import com.example.narutotest.data.mappers.toCharEntity
 import com.example.narutotest.data.mappers.toNarutoChar
 import com.example.narutotest.data.model.NarutoChar
 import com.example.narutotest.ui.navigation.CharactersDetailsScreenDest
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
 
 sealed interface CharUiState {
     data class Success(val character: NarutoChar) : CharUiState
@@ -21,8 +19,8 @@ sealed interface CharUiState {
     object Loading : CharUiState
 }
 
-@HiltViewModel
-class CharDetailViewModel @Inject constructor(
+
+class CharDetailViewModel (
     val savedStateHandle: SavedStateHandle,
     val narutoRepository: NarutoRepository
 ): ViewModel() {

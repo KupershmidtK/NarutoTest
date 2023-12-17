@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,11 +14,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,37 +29,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
-import com.example.narutotest.data.model.NarutoItem
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.narutotest.data.model.NarutoChar
+import com.example.narutotest.ui.components.ListSearchString
 import com.example.narutotest.ui.components.NarutoTopBar
-import com.example.narutotest.ui.theme.Carrot20
+import com.example.narutotest.ui.viewmodel.AppViewModelProvider
+import com.example.narutotest.ui.viewmodel.CharListUiState
+import com.example.narutotest.ui.viewmodel.CharListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharListScreen(
-    itemList: LazyPagingItems<NarutoItem>,
     title: String,
     navBack: () -> Unit,
-    modifier: Modifier = Modifier,
     navToDetails: (String) -> Unit,
+    viewModel: CharListViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+    val uiState = viewModel.uiState
+    val uiSearchState = viewModel.uiSearchState.collectAsState()
 
-//    val itemList: LazyPagingItems<NarutoChar> = viewModel.narutoCharsFlow.collectAsLazyPagingItems()
-
-    val context = LocalContext.current
-    LaunchedEffect(key1 = itemList.loadState) {
-        if(itemList.loadState.refresh is LoadState.Error) {
-            Toast.makeText(
-                context,
-                "Error: " + (itemList.loadState.refresh as LoadState.Error).error.message,
-                Toast.LENGTH_LONG
-            ).show()
-        }
-    }
-
-    val config = LocalConfiguration.current
-    val orientationMode by remember { mutableStateOf(config.orientation) }
     Scaffold(
         topBar = {
             NarutoTopBar(
@@ -64,35 +55,61 @@ fun CharListScreen(
                 navBack = navBack,
             )
          },
-//        containerColor = Carrot20,
 
     ) { padding ->
-        Column(
-            modifier = Modifier.padding(padding)
-        ) {
-            CharSearchString(onSearch = navToDetails)
-//            Spacer(Modifier.height(4.dp))
 
-            Box(modifier = Modifier.fillMaxSize()) {
-                if (itemList.loadState.refresh is LoadState.Loading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                } else {
-                    if (orientationMode == Configuration.ORIENTATION_PORTRAIT) {
-                        VerticalList(characters = itemList, navToDetails = navToDetails)
-                    } else {
-                        HorizontalList(characters = itemList, navToDetails = navToDetails)
-                    }
-                }
+        when(uiState) {
+            CharListUiState.Error -> ErrorToast()
+            CharListUiState.Loading -> LoadingScreen()
+            is CharListUiState.Success -> {
+                SuccessScreen(
+                    filteredList = uiState.filteredList,
+                    navToDetails = navToDetails,
+                    uiSearchState = uiSearchState,
+                    searchValueChange = viewModel::setSearchText,
+                    padding = padding
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun SuccessScreen(
+    filteredList: List<NarutoChar>,
+    uiSearchState: State<String>,
+    padding: PaddingValues,
+    searchValueChange: (String) -> Unit,
+    navToDetails: (String) -> Unit,
+) {
+    val config = LocalConfiguration.current
+    val orientationMode by remember { mutableStateOf(config.orientation) }
+
+    Column(
+        modifier = Modifier.padding(padding)
+    ) {
+        ListSearchString(
+            state = uiSearchState,
+            onValueChange = searchValueChange)
+
+        Box(modifier = Modifier.fillMaxSize()) {
+            if (orientationMode == Configuration.ORIENTATION_PORTRAIT) {
+                PortraitCharList(
+                    filteredList = filteredList,
+                    navToDetails = navToDetails)
+            } else {
+                LandscapeCharList(
+                    characters = filteredList,
+                    navToDetails = navToDetails
+                )
             }
         }
     }
 }
 
 @Composable 
-fun VerticalList(
-    characters: LazyPagingItems<NarutoItem>,
+fun PortraitCharList(
+    filteredList: List<NarutoChar>,
     navToDetails: (String) -> Unit,
     ) {
     LazyColumn(
@@ -100,30 +117,22 @@ fun VerticalList(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        items(characters.itemCount) { index ->
-            val character = characters[index]
-            if (character != null) {
-                CharListCard(
-                    item = character,
-                    navToDetails = navToDetails,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(300.dp)
-                        .padding(horizontal = 16.dp)
-                )
-            }
-        }
-        item {
-            if (characters.loadState.append is LoadState.Loading) {
-                CircularProgressIndicator()
-            }
+        items(filteredList) {
+            CharListCard(
+                item = it,
+                navToDetails = navToDetails,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .padding(horizontal = 16.dp)
+            )
         }
     }
 }
 
 @Composable
-fun HorizontalList(
-    characters: LazyPagingItems<NarutoItem>,
+fun LandscapeCharList(
+    characters: List<NarutoChar>,
     navToDetails: (String) -> Unit,
     ) {
     LazyRow(
@@ -131,24 +140,33 @@ fun HorizontalList(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        items(characters.itemCount) { index ->
-            val character = characters[index]
-            if (character != null) {
-                CharListCard(
-                    item = character,
-                    navToDetails = navToDetails,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(300.dp)
-                        .padding(vertical = 8.dp)
-                )
-            }
-        }
-        item {
-            if (characters.loadState.append is LoadState.Loading) {
-                CircularProgressIndicator()
-            }
+        items(characters) {
+            CharListCard(
+                item = it,
+                navToDetails = navToDetails,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(300.dp)
+                    .padding(vertical = 8.dp)
+            )
         }
     }
 }
 
+@Composable
+fun LoadingScreen() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        CircularProgressIndicator(
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
+
+@Composable
+fun ErrorToast() {
+    Toast.makeText(
+        LocalContext.current,
+        "Error: Can't load data from Internet",
+        Toast.LENGTH_LONG
+    ).show()
+}

@@ -6,7 +6,6 @@ import com.example.narutotest.data.dto.NarutoClanDto
 import com.example.narutotest.data.dto.NarutoVillageDto
 import com.example.narutotest.data.model.NarutoChar
 import com.example.narutotest.data.model.NarutoVillageClan
-import com.example.narutotest.data.model.NarutoItem
 
 fun NarutoCharDto.toCharEntity() = NarutoCharEntity(
     id = id,
@@ -24,12 +23,6 @@ fun NarutoCharEntity.toNarutoChar() = NarutoChar(
     jutsu = jutsu.split(";"),
     natureType = natureType.split(";"),
     uniqueTraits = uniqueTraits.split(";")
-)
-
-fun NarutoCharEntity.toNarutoItem() = NarutoItem(
-    id = id,
-    name = name,
-    images = images.split(";")
 )
 
 fun NarutoClanDto.toNarutoVillageClan() = NarutoVillageClan (

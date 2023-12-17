@@ -2,40 +2,37 @@ package com.example.narutotest.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.narutotest.data.model.NarutoItem
 import com.example.narutotest.ui.characters.CharDetailsScreen
-import com.example.narutotest.ui.characters.CharListViewModel
-import com.example.narutotest.ui.clans.VillageClanScreen
-import com.example.narutotest.ui.clans.ClanViewModel
-import com.example.narutotest.ui.clans.VillageViewModel
 import com.example.narutotest.ui.characters.CharListScreen
-import com.example.testdraw.ui.home.HomeScreen
+import com.example.narutotest.ui.viewmodel.ClanViewModel
+import com.example.narutotest.ui.clans.VillageClanScreen
+import com.example.narutotest.ui.viewmodel.AppViewModelProvider
+import com.example.narutotest.ui.viewmodel.VillageViewModel
+import com.example.narutotest.ui.home.HomeScreen
 
 @Composable
 fun NarutoNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
-    val charListViewModel: CharListViewModel = hiltViewModel()
-    val characters: LazyPagingItems<NarutoItem> = charListViewModel.narutoCharsFlow.collectAsLazyPagingItems()
+//    val charViewModel: CharListViewModel = hiltViewModel()
 
-    val clanViewModel: ClanViewModel = hiltViewModel()
-    val clanUiState by clanViewModel.uiState.collectAsState()
+    val clanViewModel: ClanViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    val clanUiState = clanViewModel.uiState
+    val clanUiSearchState = clanViewModel.uiSearchState.collectAsState()
 
-    val villageViewModel: VillageViewModel = hiltViewModel()
-    val villageUiState by villageViewModel.uiState.collectAsState()
+    val villageViewModel: VillageViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    val villageUiState = villageViewModel.uiState
+    val villageUiSearchState = villageViewModel.uiSearchState.collectAsState()
 
     NavHost (
         navController = navController,
@@ -54,10 +51,9 @@ fun NarutoNavGraph(
             route = CharactersScreenDest.route
             ) {
             CharListScreen(
-                itemList = characters,
                 title = stringResource(id = CharactersScreenDest.title),
                 navToDetails = { navController.navigate(route = "${CharactersDetailsScreenDest.route}/$it")},
-                navBack = { navController.popBackStack() }
+                navBack = { navController.popBackStack() },
             )
         }
 
@@ -66,27 +62,26 @@ fun NarutoNavGraph(
             arguments = listOf(navArgument(CharactersDetailsScreenDest.charNameArg){ type = NavType.StringType })
         ) {
             CharDetailsScreen(
-//                navBack = { navController.popBackStack() }
+                navBack = { navController.popBackStack() },
             )
         }
 
-        composable(
-            route = ClansScreenDest.route
-        ) {
+        composable(route = ClansScreenDest.route) {
             VillageClanScreen(
                 uiState = clanUiState,
+                uiSearchState = clanUiSearchState,
                 title = ClansScreenDest.title,
+                searchStringChange = clanViewModel::setSearchText,
                 navBack = { navController.popBackStack() }
             )
         }
 
-
-        composable(
-            route = VillagesScreenDest.route
-        ) {
+        composable(route = VillagesScreenDest.route) {
             VillageClanScreen(
                 uiState = villageUiState,
+                uiSearchState = villageUiSearchState,
                 title = VillagesScreenDest.title,
+                searchStringChange = villageViewModel::setSearchText,
                 navBack = { navController.popBackStack() }
             )
         }

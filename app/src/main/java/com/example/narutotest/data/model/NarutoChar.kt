@@ -1,14 +1,9 @@
 package com.example.narutotest.data.model
 
-open class NarutoItem(
-    open val id: Int,
-    open val name: String,
-    open val images: List<String>?
-)
 data class NarutoChar(
-        override val id: Int,
-        override val name: String,
-        override val images: List<String>?,
+        val id: Int,
+        val name: String,
+        val images: List<String>?,
         //val debut: Debut? = null,
         //val personal: Personal? = null,
         //val family: Family? = null,
@@ -17,4 +12,4 @@ data class NarutoChar(
         val uniqueTraits: List<String>?,
         //val rank: Rank? = null,
         //val voiceActors: Voice? = null
-    ): NarutoItem(id, name, images)
+)

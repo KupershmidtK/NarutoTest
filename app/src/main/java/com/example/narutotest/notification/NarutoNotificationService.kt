@@ -5,14 +5,14 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat.getSystemService
 import com.example.narutotest.MainActivity
 import com.example.narutotest.R
-import okhttp3.internal.notify
 
-class NarutoNotificationService(
+class NarutoNotificationService (
     private val context: Context
 ) {
+
+
     private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     fun showNotification(text: String) {
         val intent = Intent(context, MainActivity::class.java).apply {
@@ -23,16 +23,19 @@ class NarutoNotificationService(
 
         val notification = NotificationCompat.Builder(context, NARUTO_CHANNEL_ID)
             .setSmallIcon(R.drawable.naruto)
-            .setContentTitle("Naruto App")
+            .setContentTitle("Naruto")
             .setContentText(text)
+            .setGroup(NARUTO_NOTIFICATION_GROUP_ID)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()
 
-        notificationManager.notify(1, notification)
+        notificationManager.notify(messageId++, notification)
     }
     companion object {
         const val NARUTO_CHANNEL_ID = "narutoChannelId"
+        const val NARUTO_NOTIFICATION_GROUP_ID = "narutoNotificationGroup.Characters"
+        private var messageId: Int = 1
     }
 }

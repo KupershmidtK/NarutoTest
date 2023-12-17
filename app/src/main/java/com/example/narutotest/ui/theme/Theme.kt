@@ -1,7 +1,6 @@
 package com.example.narutotest.ui.theme
 
 import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -33,9 +32,13 @@ private val LightColorScheme = lightColorScheme(
 
     surface = Carrot,
     onSurface = Carrot10,
+    onSurfaceVariant = Carrot20,
 
     primaryContainer = Carrot10,
-    onPrimaryContainer = Color.Black
+    onPrimaryContainer = Color.Black,
+
+    secondary = Carrot,
+
 
 
 

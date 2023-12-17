@@ -38,8 +38,15 @@ val Typography = Typography(
     labelSmall = TextStyle(
         fontFamily = NarutoFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 10.sp,
+        fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
-    )
+    ),
+    labelMedium = TextStyle(
+        fontFamily = NarutoFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 18.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp
+)
 )

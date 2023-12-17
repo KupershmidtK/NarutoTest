@@ -21,54 +21,64 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.narutotest.R
 import com.example.narutotest.data.model.NarutoChar
-import com.example.narutotest.data.model.NarutoItem
-import com.example.narutotest.ui.theme.Carrot
-import com.example.narutotest.ui.theme.Carrot10
 import com.example.narutotest.ui.theme.NarutoTestTheme
 
 @Composable
 fun CharListCard(
-    item: NarutoItem,
+    item: NarutoChar,
     navToDetails: (String) -> Unit,
     modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
             .clickable { navToDetails(item.name) },
         colors = CardDefaults.cardColors(
-            containerColor = Carrot
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
         )
     ) {
         Column (
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val imageUrl = if (item.images.isNullOrEmpty()) "" else item.images?.get(0)
-
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = item.name,
-                error = painterResource(id = R.drawable.naruto),
-                contentScale = ContentScale.Crop,
+            NarutoImageCard(
+                imageList = item.images,
                 modifier = Modifier
                     .weight(5f)
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 4.dp)
                     .fillMaxWidth()
-                    .border(12.dp, Carrot10),
-                    )
+                    .border(12.dp, MaterialTheme.colorScheme.onSurface),
+            )
 
             Text(
                 text = item.name,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.labelMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(start = 16.dp, end= 16.dp, bottom = 8.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
                     .fillMaxWidth()
                 )
         }
     }
 }
 
+@Composable
+fun NarutoImageCard(
+    imageList: List<String>?,
+    modifier: Modifier = Modifier
+) {
+    val imageUrl = if (imageList.isNullOrEmpty()) "" else imageList[0]
+
+    AsyncImage(
+        model = imageUrl,
+        contentDescription = null,
+//        error = painterResource(id = R.drawable.naruto),
+        error = painterResource(id = R.drawable.ic_broken_image),
+//        contentScale = ContentScale.Crop,
+        contentScale = ContentScale.FillBounds,
+        modifier = modifier
+    )
+}
 
 @Preview
 @Composable
