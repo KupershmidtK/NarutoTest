@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NarutoTest</string>
+    <string name="app_name">Naruto</string>
     <string name="char_title">Characters</string>
     <string name="char_info">Character Information</string>
     <string name="search">Type here to search</string>
